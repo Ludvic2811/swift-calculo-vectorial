@@ -77,8 +77,8 @@ with st.sidebar:
     st.code(f"R0 = {R0_KM:.0f} km\nRf = {RF_KM:.0f} km\nk  = {K_S:.10e} s⁻¹\nω0 = {OMEGA0_RAD_S:.12f} rad/s")
     st.caption("El radio decrece exponencialmente en ambos modelos.")
 
-tab_anim, tab_analisis, tab_formulas, tab_entrega = st.tabs(
-    ["🛰️ Simulación animada", "📈 Análisis y datos", "🧮 Desarrollo matemático", "📋 Presentación y entrega"]
+tab_anim, tab_analisis, tab_formulas = st.tabs(
+    ["🛰️ Simulación animada", "📈 Análisis y datos", "🧮 Desarrollo matemático"]
 )
 
 with tab_anim:
@@ -95,7 +95,12 @@ with tab_anim:
     }
     html = (BASE / "assets" / "orbital_view.html").read_text(encoding="utf-8")
     html = html.replace("__SWIFT_CONFIG__", json.dumps(config, ensure_ascii=False))
-    st.html(html, unsafe_allow_javascript=True)
+    # Ejecutar la animación en un iframe independiente que admite JavaScript.
+    st.iframe(
+        "<style>html,body{margin:0;padding:0;background:transparent}</style>" + html,
+        height="content",
+        alt="Simulación animada de la órbita del satélite Swift",
+    )
     st.info(
         "La opción **6× o 12×** exagera solamente la separación radial en el dibujo, "
         "para hacer visible una caída de 155 km frente a un radio terrestre de 6371 km. "
@@ -245,46 +250,6 @@ with tab_formulas:
         f"({TIEMPO_150KM_S:.2f} s)."
     )
 
-with tab_entrega:
-    st.subheader("Cómo presentar este proyecto")
-    st.markdown(
-        """
-        1. **Parte I–IV:** presenta las derivadas y operaciones matemáticas hechas a mano.
-        2. **Ejercicio 13:** abre la pestaña *Análisis y datos*, selecciona *Velocidad angular constante*,
-           y consulta el inicio (0 min) y las 4 horas (240 min).
-        3. **Ejercicio 14:** usa la función de altura y comprueba que 150 km se alcanzan
-           a las 6.4368 horas aproximadamente.
-        4. **Ejercicio 15:** en *Simulación animada*, cambia a *Cuasicircular*;
-           en *Análisis* compara la rapidez de ambos modelos.
-        5. **Entrega final:** agrega el enlace público de la aplicación a tu PDF/cuaderno,
-           junto con la tabla, respuestas razonadas y conclusión.
-        """
-    )
-    st.warning(
-        "Esta aplicación no reproduce el **simulador Swift** indicado por el profesor ni calcula "
-        "temperatura, arrastre aerodinámico real, ablación o fragmentación. "
-        "Sirve para verificar las ecuaciones del proyecto y comparar modelos matemáticos. "
-        "La observación real del calentamiento queda pendiente si el profesor exige su simulador."
-    )
-    st.markdown("#### Ideas para explicar los resultados")
-    st.write(
-        "**¿Por qué disminuye la rapidez en el primer modelo?** "
-        "La velocidad angular es fija; cuando disminuye el radio, disminuye la velocidad transversal rω."
-    )
-    st.write(
-        "**¿Por qué aumenta en el cuasicircular?** "
-        "Con ω = √(μ/r³), la velocidad transversal es √(μ/r) y aumenta al disminuir el radio."
-    )
-    st.write(
-        "**¿Por qué la aceleración sigue siendo grande si la rapidez cambia poco?** "
-        "Porque la dirección de la velocidad cambia continuamente; predomina la aceleración normal."
-    )
-    st.write(
-        "**¿Qué más influye en el calentamiento?** "
-        "La densidad atmosférica, la geometría/materiales del satélite y su orientación respecto al flujo. "
-        "Esta aplicación no cuantifica ninguno de estos factores."
-    )
-    st.caption("Asignatura: Cálculo Vectorial · Proyecto académico individual · Modelo didáctico de Swift")
 
 st.divider()
 st.caption(
