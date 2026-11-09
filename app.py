@@ -101,11 +101,14 @@ with tab_anim:
         height=860,
         scrolling=False,
     )
-    st.info(
-        "La opción **6× o 12×** exagera solamente la separación radial en el dibujo, "
-        "para hacer visible una caída de 155 km frente a un radio terrestre de 6371 km. "
-        "Todos los valores numéricos siguen utilizando el modelo sin exageración. La fase de reentrada es una representación visual adicional para la entrega."
-    )
+    st.markdown("<div style='height:0.9rem'></div>", unsafe_allow_html=True)
+    with st.expander("ℹ️ Información sobre la escala y la reentrada", expanded=False):
+        st.write(
+            "La opción **6× o 12×** exagera solamente la separación radial en el dibujo, "
+            "para hacer visible una caída de 155 km frente a un radio terrestre de 6371 km. "
+            "Todos los valores numéricos siguen utilizando el modelo sin exageración. "
+            "La fase de reentrada es una representación visual adicional para la entrega."
+        )
 
 with tab_analisis:
     st.subheader("Consulta precisa de posición, velocidad y aceleración")
