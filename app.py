@@ -11,6 +11,7 @@ from pathlib import Path
 import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
+import streamlit.components.v1 as components
 
 from modelo import (
     ALTURA_FINAL_KM,
@@ -82,7 +83,7 @@ tab_anim, tab_analisis, tab_formulas = st.tabs(
 )
 
 with tab_anim:
-    st.caption("Presiona **Reproducir** y cambia entre los modelos. Los indicadores se actualizan con cada cuadro de la animación.")
+    st.caption("Presiona **Reproducir** y cambia entre los modelos. Cuando termine la fase orbital, puedes usar **☄ Reentrada** para mostrar el descenso final ilustrativo, con calentamiento y fragmentación visual.")
     config = {
         "R": RADIO_TIERRA_KM,
         "r0": R0_KM,
@@ -95,16 +96,15 @@ with tab_anim:
     }
     html = (BASE / "assets" / "orbital_view.html").read_text(encoding="utf-8")
     html = html.replace("__SWIFT_CONFIG__", json.dumps(config, ensure_ascii=False))
-    # Ejecutar la animación en un iframe independiente que admite JavaScript.
-    st.iframe(
-        "<style>html,body{margin:0;padding:0;background:transparent}</style>" + html,
-        height="content",
-        alt="Simulación animada de la órbita del satélite Swift",
+    components.html(
+        html,
+        height=860,
+        scrolling=False,
     )
     st.info(
         "La opción **6× o 12×** exagera solamente la separación radial en el dibujo, "
         "para hacer visible una caída de 155 km frente a un radio terrestre de 6371 km. "
-        "Todos los valores numéricos siguen utilizando el modelo sin exageración."
+        "Todos los valores numéricos siguen utilizando el modelo sin exageración. La fase de reentrada es una representación visual adicional para la entrega."
     )
 
 with tab_analisis:
