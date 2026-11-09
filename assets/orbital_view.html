@@ -33,7 +33,80 @@
 #swift-lab input[type=range]{flex:1;min-width:190px;accent-color:#4bd2ff;cursor:pointer}
 #swift-lab .time{font-size:12px;color:#b9d2e8;min-width:83px;text-align:right;font-variant-numeric:tabular-nums}
 #swift-lab .foot{font-size:11px;line-height:1.5;color:#9aadc5;border-top:1px solid #243958;padding:10px 19px 14px}
-@media(max-width:640px){#swift-lab canvas{height:375px}#swift-lab .readout{grid-template-columns:repeat(2,minmax(0,1fr))}#swift-lab .metric strong{font-size:18px}#swift-lab .legend{display:none}#swift-lab .playbar{gap:8px}#swift-lab .control-group{min-width:130px}}
+/* Diseño responsivo: botones visibles antes del gráfico y recorrido vertical natural. */
+@media(max-width:640px){
+#swift-lab{border-radius:14px}
+#swift-lab .toolbar{padding:11px 13px;gap:7px}
+#swift-lab .brand{font-size:11px;letter-spacing:1.1px}
+#swift-lab .live{font-size:10px;padding:5px 8px}
+#swift-lab .control-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding:11px 12px 7px}
+#swift-lab .control-group,#swift-lab .control-group.small{min-width:0;max-width:none;width:100%;gap:4px}
+#swift-lab .control-group:first-child{grid-column:1/-1}
+#swift-lab .control-group label{font-size:10px;letter-spacing:.6px}
+#swift-lab select{padding:10px 7px;font-size:12px;min-height:41px}
+#swift-lab .phase-badge{font-size:10px;padding:7px 10px}
+#swift-lab .playbar{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;padding:10px 12px 8px}
+#swift-lab .playbar button{width:100%;min-width:0;font-size:11.5px;padding:11px 3px;white-space:nowrap;min-height:42px}
+#swift-lab input[type=range]{grid-column:1/3;min-width:0;width:100%;height:30px}
+#swift-lab .time{grid-column:3;min-width:0;font-size:11px}
+#swift-lab .stage{margin:7px 9px 0;border-radius:10px}
+#swift-lab canvas{height:310px}
+#swift-lab .hud-top{top:11px;left:11px}
+#swift-lab .hud-top strong{font-size:10px}
+#swift-lab .hud-top span{font-size:10px}
+#swift-lab .legend{display:none}
+#swift-lab .readout{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;padding:10px 10px}
+#swift-lab .metric{padding:9px 10px}
+#swift-lab .metric small{font-size:10px}
+#swift-lab .metric strong{font-size:17px;line-height:1.45}
+#swift-lab .metric strong span{font-size:10px}
+#swift-lab .foot{font-size:10px;padding:10px 12px 12px}
+}
+@media(max-width:360px){#swift-lab canvas{height:270px}#swift-lab .playbar button{font-size:10px}#swift-lab .metric strong{font-size:16px}}
+
+/* Diseño móvil: controles accesibles antes de la animación y desplazamiento vertical fluido. */
+@media (max-width: 700px) {
+  html,body { margin:0; padding:0; overflow-x:hidden; -webkit-overflow-scrolling:touch; }
+  #swift-lab { display:flex; flex-direction:column; max-width:100%; border-radius:14px; box-shadow:none; }
+  #swift-lab .toolbar { order:1; padding:11px 13px; gap:7px; }
+  #swift-lab .brand { font-size:10px; letter-spacing:1.1px; }
+  #swift-lab .live { font-size:9px; padding:5px 8px; }
+  #swift-lab .control-row { order:2; display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; padding:10px 12px 0; }
+  #swift-lab .control-group, #swift-lab .control-group.small { min-width:0; max-width:none; flex:auto; gap:4px; }
+  #swift-lab .control-group:first-child { grid-column:1/-1; }
+  #swift-lab .control-group label { font-size:10px; letter-spacing:.65px; }
+  #swift-lab select { width:100%; min-width:0; min-height:43px; padding:8px 7px; font-size:12px; }
+  #swift-lab .playbar { order:3; display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; align-items:center; padding:12px 12px 5px; }
+  #swift-lab .playbar button { min-width:0; width:100%; min-height:44px; padding:10px 9px; font-size:13px; }
+  #swift-lab #swift-toggle { grid-column:1/-1; min-height:48px; font-size:15px; }
+  #swift-lab .playbar input[type=range] { grid-column:1/-1; width:100%; min-width:0; height:25px; margin:3px 0 0; touch-action:pan-y; }
+  #swift-lab .playbar .time { grid-column:1/-1; text-align:center; justify-self:center; padding-bottom:0; min-width:0; }
+  #swift-lab .phase-wrap { order:4; padding:6px 12px 4px !important; }
+  #swift-lab .phase-badge { font-size:10px; padding:7px 10px; }
+  #swift-lab .stage { order:5; margin:5px 12px 0; }
+  #swift-lab canvas { height:290px; touch-action:pan-y; }
+  #swift-lab .hud-top { top:11px; left:12px; }
+  #swift-lab .hud-top strong { font-size:11px; }
+  #swift-lab .hud-top span { font-size:10px; }
+  #swift-lab .legend { display:none; }
+  #swift-lab .readout { order:6; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; padding:10px 12px; }
+  #swift-lab .metric { padding:8px 10px; }
+  #swift-lab .metric small { font-size:10px; }
+  #swift-lab .metric strong { font-size:18px; line-height:1.45; }
+  #swift-lab .metric strong span { font-size:10px; }
+  #swift-lab .foot { order:7; padding:9px 12px 12px; font-size:10px; }
+}
+@media(max-width:370px) {
+  #swift-lab .toolbar { padding:9px 10px; }
+  #swift-lab .brand { font-size:9px; }
+  #swift-lab .control-row { padding:9px 9px 0; gap:6px; }
+  #swift-lab .playbar { padding:10px 9px 4px; gap:7px; }
+  #swift-lab .phase-wrap { padding:6px 9px 4px !important; }
+  #swift-lab .stage { margin:4px 9px 0; }
+  #swift-lab canvas { height:260px; }
+  #swift-lab .readout { padding:8px 9px; gap:6px; }
+  #swift-lab .metric strong { font-size:16px; }
+}
 </style>
 <div class="toolbar">
   <div class="brand"><span aria-hidden="true">✦</span> SWIFT · LABORATORIO ORBITAL</div>
@@ -44,7 +117,14 @@
   <div class="control-group small"><label for="swift-scale">Radio visual</label><select id="swift-scale"><option value="1">1× · escala real</option><option selected value="6">6× · ilustrativo</option><option value="12">12× · ilustrativo</option></select></div>
   <div class="control-group small"><label for="swift-speed">Reproducción</label><select id="swift-speed"><option value="1">Normal · 22 s</option><option value="2">Rápida · 11 s</option><option value="4">Muy rápida · 5.5 s</option></select></div>
 </div>
-<div style="padding:0 18px 8px"><div class="phase-badge" id="swift-phase"><em>●</em>Fase orbital del proyecto (0 a 8 h)</div></div>
+<div class="phase-wrap" style="padding:0 18px 8px"><div class="phase-badge" id="swift-phase"><em>●</em>Fase orbital del proyecto (0 a 8 h)</div></div>
+<div class="playbar">
+ <button id="swift-toggle" type="button">▶ Reproducir</button>
+ <button class="secondary" id="swift-reset" type="button">↺ Reiniciar</button>
+ <button class="warn" id="swift-reentry" type="button">☄ Reentrada</button>
+ <input type="range" id="swift-slider" min="0" max="28800" step="30" value="0" aria-label="Tiempo de simulación entre 0 y 8 horas"/>
+ <div class="time" id="swift-clock">00:00:00</div>
+</div>
 <div class="stage">
   <div class="hud-top"><strong>VISTA DESDE EL POLO NORTE</strong><span>Trayectoria con radio decreciente</span></div>
   <div class="legend"><span><b style="background:#ffcb68"></b>Satélite y estela</span><span><b style="background:#4bcbfb"></b>Vector velocidad</span><span><b style="background:#fc7f95"></b>Vector aceleración</span></div>
@@ -55,13 +135,6 @@
  <div class="metric"><small>Altura sobre Tierra</small><strong id="swift-height">275.00 <span>km</span></strong></div>
  <div class="metric"><small>Rapidez</small><strong id="swift-vel">7.7444 <span>km/s</span></strong></div>
  <div class="metric"><small>Aceleración total</small><strong id="swift-acc">9.0244 <span>m/s²</span></strong></div>
-</div>
-<div class="playbar">
- <button id="swift-toggle" type="button">▶ Reproducir</button>
- <button class="secondary" id="swift-reset" type="button">↺ Reiniciar</button>
- <button class="warn" id="swift-reentry" type="button">☄ Reentrada</button>
- <input type="range" id="swift-slider" min="0" max="28800" step="30" value="0" aria-label="Tiempo de simulación entre 0 y 8 horas"/>
- <div class="time" id="swift-clock">00:00:00</div>
 </div>
 <div class="foot" id="swift-notes">La escala del radio se amplía ×6 para visualizar el descenso: los cálculos siempre usan km reales. Las flechas muestran direcciones, no magnitudes a escala. Al terminar, puedes activar una reentrada ilustrativa con calentamiento y fragmentación visual. No es una simulación física exacta.</div>
 </div>

@@ -98,10 +98,10 @@ with tab_anim:
     html = html.replace("__SWIFT_CONFIG__", json.dumps(config, ensure_ascii=False))
     components.html(
         html,
-        height=860,
-        scrolling=False,
+        height=900,
+        scrolling=True,
     )
-    st.markdown("<div style='height:0.9rem'></div>", unsafe_allow_html=True)
+    st.markdown("<div style='height:0.3rem'></div>", unsafe_allow_html=True)
     with st.expander("ℹ️ Información sobre la escala y la reentrada", expanded=False):
         st.write(
             "La opción **6× o 12×** exagera solamente la separación radial en el dibujo, "
