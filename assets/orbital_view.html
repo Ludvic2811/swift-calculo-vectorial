@@ -1,0 +1,172 @@
+<div id="swift-lab" class="swift-lab">
+<style>
+#swift-lab{font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Arial,sans-serif;color:#eaf4ff;border:1px solid #253a57;background:linear-gradient(125deg,#0c1b34,#071122 58%,#101f37);border-radius:20px;overflow:hidden;box-shadow:0 18px 60px #0004}
+#swift-lab *,#swift-lab *::before,#swift-lab *::after{box-sizing:border-box}
+#swift-lab .toolbar{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:13px;padding:17px 20px;border-bottom:1px solid #223653}
+#swift-lab .brand{font-size:12px;font-weight:800;letter-spacing:1.9px;color:#72dbff;display:flex;align-items:center;gap:9px}
+#swift-lab .live{font-size:11px;color:#a5b9d0;background:#182d43;border:1px solid #2c4664;padding:6px 10px;border-radius:100px}
+#swift-lab .live i{display:inline-block;background:#36e09e;border-radius:50%;height:7px;width:7px;margin-right:6px;box-shadow:0 0 10px #36e09e}
+#swift-lab .control-row{display:flex;flex-wrap:wrap;gap:12px;padding:12px 18px 2px;align-items:flex-end}
+#swift-lab .control-group{display:flex;flex-direction:column;gap:6px;min-width:165px;flex:1}
+#swift-lab .control-group.small{max-width:145px;min-width:120px}
+#swift-lab .control-group label{color:#99afc9;font-size:11px;text-transform:uppercase;letter-spacing:1.1px;font-weight:700}
+#swift-lab select{border:1px solid #2d4764;color:#eff7ff;background:#10243d;padding:10px 10px;border-radius:9px;width:100%;font-size:13px;outline:none}
+#swift-lab select:focus{border-color:#6cd2ff}
+#swift-lab .stage{position:relative;margin:10px 12px 0;border:1px solid #1d3150;border-radius:14px;overflow:hidden;background:#071022}
+#swift-lab canvas{display:block;width:100%;height:500px;touch-action:pan-y}
+#swift-lab .hud-top{position:absolute;top:17px;left:18px;z-index:1;pointer-events:none}
+#swift-lab .hud-top strong{font-size:13px;font-weight:700}
+#swift-lab .hud-top span{display:block;margin-top:5px;font-size:11px;color:#8ca9c8}
+#swift-lab .legend{position:absolute;right:16px;top:16px;z-index:1;display:flex;flex-direction:column;gap:7px;pointer-events:none;font-size:11px;color:#b0c3d9}
+#swift-lab .legend b{display:inline-block;width:12px;height:3px;border-radius:2px;margin-right:7px;vertical-align:middle}
+#swift-lab .readout{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;padding:13px 16px}
+#swift-lab .metric{background:#13253b;border:1px solid #263e5c;border-radius:11px;padding:11px 12px;min-width:0}
+#swift-lab .metric small{display:block;color:#9db3cd;font-size:11px;letter-spacing:.3px}
+#swift-lab .metric strong{display:block;font-size:20px;font-weight:720;line-height:1.6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-variant-numeric:tabular-nums}
+#swift-lab .metric strong span{font-size:11px;color:#90acc4;font-weight:500}
+#swift-lab .playbar{display:flex;gap:12px;align-items:center;padding:4px 18px 14px;flex-wrap:wrap}
+#swift-lab button{cursor:pointer;border:1px solid #5fd1fd;background:#33b9ea;color:#06152b;border-radius:9px;padding:9px 15px;font-weight:750;font-size:13px;min-width:103px}
+#swift-lab button.secondary{background:#13243c;color:#d5e7fa;border-color:#324a67;min-width:75px}
+#swift-lab input[type=range]{flex:1;min-width:190px;accent-color:#4bd2ff;cursor:pointer}
+#swift-lab .time{font-size:12px;color:#b9d2e8;min-width:83px;text-align:right;font-variant-numeric:tabular-nums}
+#swift-lab .foot{font-size:11px;line-height:1.5;color:#9aadc5;border-top:1px solid #243958;padding:10px 19px 14px}
+@media(max-width:640px){#swift-lab canvas{height:375px}#swift-lab .readout{grid-template-columns:repeat(2,minmax(0,1fr))}#swift-lab .metric strong{font-size:18px}#swift-lab .legend{display:none}#swift-lab .playbar{gap:8px}#swift-lab .control-group{min-width:130px}}
+</style>
+<div class="toolbar">
+  <div class="brand"><span aria-hidden="true">✦</span> SWIFT · LABORATORIO ORBITAL</div>
+  <div class="live"><i></i>SIMULACIÓN EDUCATIVA · 8 HORAS</div>
+</div>
+<div class="control-row">
+  <div class="control-group"><label for="swift-mode">Modelo matemático</label><select id="swift-mode"><option value="fixed">ω constante (proyecto)</option><option value="quasi">Cuasicircular (comparación)</option></select></div>
+  <div class="control-group small"><label for="swift-scale">Radio visual</label><select id="swift-scale"><option value="1">1× · escala real</option><option selected value="6">6× · ilustrativo</option><option value="12">12× · ilustrativo</option></select></div>
+  <div class="control-group small"><label for="swift-speed">Reproducción</label><select id="swift-speed"><option value="1">Normal · 22 s</option><option value="2">Rápida · 11 s</option><option value="4">Muy rápida · 5.5 s</option></select></div>
+</div>
+<div class="stage">
+  <div class="hud-top"><strong>VISTA DESDE EL POLO NORTE</strong><span>Trayectoria con radio decreciente</span></div>
+  <div class="legend"><span><b style="background:#ffcb68"></b>Satélite y estela</span><span><b style="background:#4bcbfb"></b>Vector velocidad</span><span><b style="background:#fc7f95"></b>Vector aceleración</span></div>
+  <canvas id="swift-canvas" aria-label="Animación de la trayectoria en espiral del satélite alrededor de la Tierra"></canvas>
+</div>
+<div class="readout" aria-live="off">
+ <div class="metric"><small>Tiempo simulado</small><strong id="swift-hour">0.00 <span>h</span></strong></div>
+ <div class="metric"><small>Altura sobre Tierra</small><strong id="swift-height">275.00 <span>km</span></strong></div>
+ <div class="metric"><small>Rapidez</small><strong id="swift-vel">7.7444 <span>km/s</span></strong></div>
+ <div class="metric"><small>Aceleración total</small><strong id="swift-acc">9.0244 <span>m/s²</span></strong></div>
+</div>
+<div class="playbar">
+ <button id="swift-toggle" type="button">▶ Reproducir</button>
+ <button class="secondary" id="swift-reset" type="button">↺ Reiniciar</button>
+ <input type="range" id="swift-slider" min="0" max="28800" step="30" value="0" aria-label="Tiempo de simulación entre 0 y 8 horas"/>
+ <div class="time" id="swift-clock">00:00:00</div>
+</div>
+<div class="foot" id="swift-notes">La escala del radio se amplía ×6 para visualizar el descenso: los cálculos siempre usan km reales. Las flechas muestran direcciones, no magnitudes a escala. No es una simulación física de la reentrada ni de su temperatura.</div>
+</div>
+<script>
+(function(){
+  const root=document.getElementById('swift-lab');
+  if(!root || root.dataset.booted==='yes') return;
+  root.dataset.booted='yes';
+  const C=__SWIFT_CONFIG__;
+  const $=id=>root.querySelector('#'+id);
+  const canvas=$('swift-canvas'),ctx=canvas.getContext('2d');
+  const modeEl=$('swift-mode'),scaleEl=$('swift-scale'),speedEl=$('swift-speed');
+  const slider=$('swift-slider'),btn=$('swift-toggle'),reset=$('swift-reset');
+  let t=0,playing=false,last=0,W=800,H=500,dpr=1;
+  const tau=Math.PI*2;
+  function calc(t0){
+    let r=C.r0*Math.exp(-C.k*t0), dr=-C.k*r;
+    let omega,theta, domega;
+    if(modeEl.value==='fixed') { omega=C.omega;theta=omega*t0;domega=0; }
+    else {omega=Math.sqrt(C.mu/(r*r*r)); theta=(2*C.omega/(3*C.k))*(Math.exp(1.5*C.k*t0)-1);domega=1.5*C.k*omega;}
+    const ar=C.k*C.k*r-r*omega*omega, ath=r*domega+2*dr*omega;
+    const v=Math.hypot(dr,r*omega),a=1000*Math.hypot(ar,ath);
+    const co=Math.cos(theta),si=Math.sin(theta);
+    const vx=dr*co-r*omega*si,vy=dr*si+r*omega*co;
+    const ax=ar*co-ath*si,ay=ar*si+ath*co;
+    return {r,h:r-C.R,omega,theta,co,si,v,a,ar,ath,vx,vy,ax,ay};
+  }
+  const c2h=seconds=>{const n=Math.round(seconds);const h=Math.floor(n/3600),m=Math.floor((n%3600)/60),s=n%60;return [h,m,s].map(x=>('0'+x).slice(-2)).join(':');};
+  function resize(){let r=canvas.getBoundingClientRect();let nw=Math.max(290,r.width),nh=Math.max(270,r.height);let ndpr=Math.min(window.devicePixelRatio||1,2);if(nw!==W||nh!==H||ndpr!==dpr){W=nw;H=nh;dpr=ndpr;canvas.width=Math.floor(W*dpr);canvas.height=Math.floor(H*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);}}
+  function arrow(x,y,dx,dy,col,label){
+    const norm=Math.hypot(dx,dy);if(norm<1e-13)return;const ux=dx/norm,uy=-dy/norm;
+    const len=47,tipx=x+ux*len,tipy=y+uy*len;
+    ctx.strokeStyle=col;ctx.fillStyle=col;ctx.lineWidth=2.2;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(tipx,tipy);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(tipx,tipy);ctx.lineTo(tipx-10*ux-5*uy,tipy-10*uy+5*ux);ctx.lineTo(tipx-10*ux+5*uy,tipy-10*uy-5*ux);ctx.closePath();ctx.fill();
+    ctx.font='bold 12px system-ui';ctx.fillText(label,tipx+6,tipy-5);
+  }
+  function draw(){
+    resize();ctx.clearRect(0,0,W,H);
+    const g=ctx.createLinearGradient(0,0,W,H);g.addColorStop(0,'#061326');g.addColorStop(1,'#030a18');ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+    // Estrellas deterministas: no depende de servicios ni imágenes externas.
+    for(let i=0;i<115;i++){
+      const x=((i*127.7+i*i*11.2)%997)/997*W;
+      const y=((i*83.1+i*i*3.3)%991)/991*H;
+      ctx.fillStyle=i%7===0?'rgba(186,222,255,.55)':'rgba(128,161,204,.24)';ctx.beginPath();ctx.arc(x,y,i%7===0?1.2:0.65,0,tau);ctx.fill();
+    }
+    const exaggeration=Number(scaleEl.value);
+    const worldR=C.R+exaggeration*C.h0;
+    const ss=Math.min(W/(worldR*2.37),H/(worldR*2.37));
+    const cx=W*0.5,cy=H*0.52;
+    const displayR=r=>C.R+exaggeration*(r-C.R);
+    const sc=(r,theta)=>[cx+displayR(r)*Math.cos(theta)*ss,cy-displayR(r)*Math.sin(theta)*ss];
+    const earthR=C.R*ss;
+    // Halo atmosférico, estratos y esfera.
+    let glow=ctx.createRadialGradient(cx,cy,earthR*.8,cx,cy,earthR*1.20);
+    glow.addColorStop(0,'rgba(36,161,246,0)');glow.addColorStop(.81,'rgba(58,155,240,.03)');glow.addColorStop(.90,'rgba(61,173,246,.22)');glow.addColorStop(1,'rgba(61,173,246,0)');
+    ctx.fillStyle=glow;ctx.beginPath();ctx.arc(cx,cy,earthR*1.20,0,tau);ctx.fill();
+    const ocean=ctx.createRadialGradient(cx-earthR*.4,cy-earthR*.5,earthR*.15,cx+earthR*.18,cy+earthR*.22,earthR*1.45);
+    ocean.addColorStop(0,'#4cafd1');ocean.addColorStop(.40,'#216d9d');ocean.addColorStop(.75,'#124b78');ocean.addColorStop(1,'#092b54');
+    ctx.fillStyle=ocean;ctx.beginPath();ctx.arc(cx,cy,earthR,0,tau);ctx.fill();
+    ctx.save();ctx.beginPath();ctx.arc(cx,cy,earthR,0,tau);ctx.clip();
+    const continents=[[[ -.62,-.56],[-.38,-.65],[-.17,-.47],[-.21,-.27],[-.04,-.18],[-.18,.01],[-.43,-.02],[-.62,-.18],[-.76,-.22]],[[.1,-.65],[.48,-.63],[.79,-.38],[.66,-.18],[.4,-.23],[.29,-.02],[.11,-.19],[-.04,-.39]],[[.04,.05],[.30,.08],[.40,.29],[.27,.62],[.04,.73],[-.05,.37]],[[.67,.57],[.89,.52],[.84,.73],[.70,.82],[.59,.68]],[[-.45,.11],[-.26,.18],[-.18,.45],[-.36,.78],[-.51,.62],[-.59,.34]]];
+    ctx.fillStyle='#64b2a5';
+    continents.forEach((pts,j)=>{ctx.beginPath();pts.forEach((p,i)=>{const x=cx+p[0]*earthR,y=cy+p[1]*earthR;i?ctx.lineTo(x,y):ctx.moveTo(x,y)});ctx.closePath();ctx.fill();});
+    ctx.strokeStyle='rgba(226,250,255,.20)';ctx.lineWidth=earthR*.055;
+    [[-.70,-.26,-.16,-.14],[.13,-.55,.62,-.43],[-.13,.48,.15,.55]].forEach(q=>{ctx.beginPath();ctx.moveTo(cx+q[0]*earthR,cy+q[1]*earthR);ctx.quadraticCurveTo(cx+q[2]*earthR,cy+q[3]*earthR,cx+(q[2]+.14)*earthR,cy+(q[3]+.08)*earthR);ctx.stroke();});
+    const night=ctx.createLinearGradient(cx-earthR*.7,cy-earthR*.7,cx+earthR*.9,cy+earthR*.8);night.addColorStop(0,'rgba(3,10,23,0)');night.addColorStop(.48,'rgba(3,10,23,.1)');night.addColorStop(1,'rgba(3,10,23,.62)');ctx.fillStyle=night;ctx.fillRect(cx-earthR,cy-earthR,earthR*2,earthR*2);ctx.restore();
+    ctx.strokeStyle='rgba(144,220,255,.72)';ctx.lineWidth=1;ctx.beginPath();ctx.arc(cx,cy,earthR,0,tau);ctx.stroke();
+    // Órbitas de referencia inicial y final.
+    ctx.setLineDash([4,6]);ctx.strokeStyle='rgba(170,190,216,.21)';ctx.lineWidth=1;
+    [C.r0,C.rf].forEach(r=>{ctx.beginPath();ctx.arc(cx,cy,displayR(r)*ss,0,tau);ctx.stroke();});ctx.setLineDash([]);
+    // Espiral completa: calculada en los 28800 s de simulación.
+    ctx.beginPath();for(let i=0;i<=1150;i++){const p=calc(C.T*i/1150),xy=sc(p.r,p.theta);i?ctx.lineTo(xy[0],xy[1]):ctx.moveTo(xy[0],xy[1]);}ctx.lineWidth=1.55;ctx.strokeStyle='rgba(98,168,214,.38)';ctx.stroke();
+    // Recorrido previo reciente del satélite.
+    ctx.beginPath();const t0=Math.max(0,t-4500);for(let i=0;i<=120;i++){const ti=t0+(t-t0)*i/120;const p=calc(ti),xy=sc(p.r,p.theta);i?ctx.lineTo(xy[0],xy[1]):ctx.moveTo(xy[0],xy[1]);}
+    ctx.strokeStyle='#f5bf55';ctx.shadowColor='#f5bb45';ctx.shadowBlur=10;ctx.lineWidth=2.6;ctx.stroke();ctx.shadowBlur=0;
+    const p=calc(t),xy=sc(p.r,p.theta),sx=xy[0],sy=xy[1];
+    // Vectores de dirección ilustrativa.
+    arrow(sx,sy,p.vx,p.vy,'#4bcafb','v');arrow(sx,sy,p.ax,p.ay,'#ff7e98','a');
+    // Satélite esquemático y paneles solares.
+    ctx.save();ctx.translate(sx,sy);ctx.rotate(-p.theta-Math.PI/2);ctx.shadowColor='#ffc95e';ctx.shadowBlur=17;
+    ctx.fillStyle='#ffdc78';ctx.strokeStyle='#f7edd2';ctx.lineWidth=1.2;ctx.fillRect(-5,-6,10,12);ctx.strokeRect(-5,-6,10,12);ctx.shadowBlur=0;
+    ctx.fillStyle='#55a6eb';ctx.strokeStyle='#b4e6ff';ctx.fillRect(-25,-5,17,10);ctx.fillRect(8,-5,17,10);ctx.strokeRect(-25,-5,17,10);ctx.strokeRect(8,-5,17,10);
+    ctx.strokeStyle='#e2e4ea';ctx.beginPath();ctx.moveTo(-8,0);ctx.lineTo(8,0);ctx.stroke();ctx.restore();
+    // Actualiza las lecturas sincronizadas con el satélite.
+    $('swift-hour').innerHTML=(t/3600).toFixed(2)+' <span>h</span>';
+    $('swift-height').innerHTML=p.h.toFixed(2)+' <span>km</span>';
+    $('swift-vel').innerHTML=p.v.toFixed(4)+' <span>km/s</span>';
+    $('swift-acc').innerHTML=p.a.toFixed(4)+' <span>m/s²</span>';
+    $('swift-clock').textContent=c2h(t);
+    slider.value=Math.round(t/30)*30;
+    $('swift-notes').textContent=exaggeration===1?'Vista en escala radial real. El cambio de altura es muy pequeño frente al radio terrestre. Flechas de dirección no a escala; sin física de temperatura ni fragmentación.':'Altura visual exagerada ×'+exaggeration+' para apreciar la espiral; los valores calculados son reales del modelo. Flechas no a escala. No se simula temperatura ni fragmentación.';
+  }
+  function tick(now){
+    if(!root.isConnected)return;
+    if(playing){
+      if(last){
+        t=Math.min(C.T,t+(now-last)/1000*(C.T/22)*Number(speedEl.value));
+        if(t>=C.T){playing=false;btn.textContent='▶ Reproducir';}
+      }
+      draw();
+    }
+    last=now;
+    requestAnimationFrame(tick);
+  }
+  btn.addEventListener('click',()=>{if(t>=C.T)t=0;playing=!playing;last=0;btn.textContent=playing?'❚❚ Pausar':'▶ Reproducir';});
+  reset.addEventListener('click',()=>{t=0;playing=false;btn.textContent='▶ Reproducir';draw();});
+  slider.addEventListener('input',()=>{t=Math.max(0,Math.min(C.T,Number(slider.value)));playing=false;btn.textContent='▶ Reproducir';draw();});
+  [modeEl,scaleEl,speedEl].forEach(e=>e.addEventListener('change',draw));
+  if('ResizeObserver' in window)new ResizeObserver(draw).observe(canvas);
+  draw();
+  requestAnimationFrame(tick);
+})();
+</script>
